@@ -22,11 +22,9 @@ def load_config(config_filepath):
 
 def build_stale_images(config, config_filepath):
     for image in config['images']:
-
         image_name = image['name']
 
         print('[[ Checking Image [%s] ... ]]' % image_name)
-
         if not podman_commands.need_to_rebuild_image(image_name):
             print('[[ Image [%s] up to date ]]' % image_name)
             continue
@@ -49,9 +47,24 @@ def build_stale_images(config, config_filepath):
         podman_commands.prune_untagged_images()
         print('[[ Pruning Untagged Images Complete ]]')
 
+def stop_delete_stale_containers(config):
+    for container in config['containers']:
+        container_name = container['name']
+        print('[[ Checking Container [%s] ... ]]' % container_name)
+        if not podman_commands.need_to_rebuild_container(container['image'], container_name):
+            print('[[ Container [%s] up to date ]]' % container_name)
+            return
+        else:
+            print('[[ Container [%s] needs rebuild ]]' % container_name)
+        print('[[ Stopping container [%s], if exists ]]' % container_name)
+        podman_commands.stop_container_if_exists(container_name)
+        print('[[ Deleting container [%s], if exists ]]' % container_name)
+        podman_commands.remove_container(container_name)
+
 def __main():
     args = parse_args()
     config = load_config(args.config)
     build_stale_images(config, PurePath(args.config))
+    stop_delete_stale_containers(config)
 
 __main()
