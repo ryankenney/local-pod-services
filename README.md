@@ -64,8 +64,14 @@ python3 build_stale_images_and_delete_stale_containers.py --config config.yml
 Run this to start a container in the foreground:
 
 ```
-python3 start_container.py --config config.yml --container git-server
+python3 run_container.py --config config.yml --container git-server
 ```
 
 The latter command should be configured to auto-restart on failure,
 thus responding to deleted stale containers.
+
+Run this to stop a running container:
+
+```
+python3 run_container.py --container git-server
+```
