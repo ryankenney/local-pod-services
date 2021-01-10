@@ -71,9 +71,6 @@ def get_image_hash(image_name):
     return hash
 
 def get_container_image_hash(container_name):
-
-    print(['podman', 'inspect', container_name, '--format', '{{.Image}}'])
-
     proc = subprocess.run( \
         ['podman', 'inspect', container_name, '--format', '{{.Image}}'], \
         check=True, universal_newlines=True, stdout=subprocess.PIPE)
