@@ -116,12 +116,12 @@ def need_to_rebuild_image(image_name):
     return False
 
 def need_to_rebuild_container(image_name, container_name):
-    if not container_exists('git-server'):
+    if not container_exists(container_name):
         print('Container [%s] does not exist' % container_name)
         return True
     else:
         print('Container [%s] exists' % container_name)
-    if not container_running('git-server'):
+    if not container_running(container_name):
         print('Container [%s] is not running' % container_name)
         return True
     else:
