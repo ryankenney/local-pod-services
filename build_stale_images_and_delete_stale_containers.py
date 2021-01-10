@@ -53,7 +53,7 @@ def stop_delete_stale_containers(config):
         print('[[ Checking Container [%s] ... ]]' % container_name)
         if not podman_commands.need_to_rebuild_container(container['image'], container_name):
             print('[[ Container [%s] up to date ]]' % container_name)
-            return
+            continue
         else:
             print('[[ Container [%s] needs rebuild ]]' % container_name)
         print('[[ Stopping container [%s], if exists ]]' % container_name)
